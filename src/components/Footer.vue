@@ -39,7 +39,7 @@
                             <li><a href="#">My Account</a></li>
                             <li><a href="#">Contact</a></li>
                             <li>
-                                <router-link to="/shopping-cart" class="primary-btn pd-cart">
+                                <router-link to="/shopping-cart">
                                     Shopping Cart
                                 </router-link>
                             </li>
