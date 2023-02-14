@@ -1,19 +1,55 @@
 <template>
     <section class="hero-section">
-        <Carousel class="hero-items">
-            <Slide v-for="slide in 2" :key="slide" class="single-hero-items set-bg pt-5" style="background-image: url('/img/hero-1.jpg');">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-5 text-left">
-                                <span>Bag,kids</span>
-                                <h1>Black friday</h1>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                </p>
-                                <a href="#" class="primary-btn">Shop Now</a>
+        <Carousel class="hero-items" :items-to-show="1">
+            <Slide v-for="slide in 2" :key="slide" :slide-to-show="1">
+                <slide class="carousel__item">
+                    <div class="single-hero-items set-bg" style="background-image: url('/img/hero-1.jpg');">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-5 text-left">
+                                    <span>Bag,kids</span>
+                                    <h1>Black friday</h1>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                                    </p>
+                                    <a href="#" class="primary-btn">Shop Now</a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </slide>
+                <slide class="carousel__item">
+                    <div class="single-hero-items set-bg" style="background-image: url('/img/hero-2.jpg');">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-5 text-left">
+                                    <span>Bag,kids</span>
+                                    <h1>Black friday</h1>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                                    </p>
+                                    <a href="#" class="primary-btn">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </slide>
+                <slide class="carousel__item">
+                    <div class="single-hero-items set-bg" style="background-image: url('/img/hero-3.jpg');">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-5 text-left">
+                                    <span>Bag,kids</span>
+                                    <h1>Black friday</h1>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                                    </p>
+                                    <a href="#" class="primary-btn">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </slide>
             </Slide>
     
             <template #addons>
@@ -37,28 +73,19 @@
     //   Pagination,
       Navigation,
     },
-    data: () => ({
-        // carousel settings
-        settings: {
-        itemsToShow: 1,
-        snapAlign: 'center',
-        },
-        // breakpoints are mobile first
-        // any settings not specified will fallback to the carousel settings
-        breakpoints: {
-            // 700px and up
-            700: {
-                itemsToShow: 1,
-                snapAlign: 'center',
-            },
-            // 1024 and up
-            1024: {
-                itemsToShow: 1,
-                snapAlign: 'start',
-            },
-        },
-    }),
+    data() {
+        return {
+            testing: "img/hero-1.jpg"
+        }
+    },
   }
 </script>
+
+<style scoped>
+    .carousel__item {
+        background-color: transparent;
+        display: block;
+    }
+</style>
   
   
