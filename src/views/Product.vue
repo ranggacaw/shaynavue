@@ -31,26 +31,16 @@
                                 <div class="product-thumbs">
                                     <Carousel :nav="false" class="product-thumbs-track ps-slider">
                                         <Slide v-for="slide in 2" :key="slide">
-                                            <div class="carousel__item">
-                                                <div @click="changeImage(thumbs[0])" :class="thumbs[0] == default_pic ? 'pt active' : 'pt' " >
-                                                    <img src="img/mickey1.jpg" alt="" />
+                                            <div v-for="ss in productDetails.galleries" v-bind:key="ss.id" class="carousel__item">
+                                                <div @click="changeImage(ss.photo)" :class="ss.photo == default_pic ? 'pt active' : 'pt' " >
+                                                    <img :src="ss.photo" alt="" />
                                                 </div>
                                             </div>
-                                            <div class="carousel__item">
+                                            <!-- <div class="carousel__item">
                                                 <div @click="changeImage(thumbs[1])" :class="thumbs[1] == default_pic ? 'pt active' : 'pt' " >
                                                     <img src="img/mickey2.jpg" alt="" />
                                                 </div>
-                                            </div>
-                                            <div class="carousel__item">
-                                                <div @click="changeImage(thumbs[2])" :class="thumbs[2] == default_pic ? 'pt active' : 'pt' " >
-                                                    <img src="img/mickey3.jpg" alt="" />
-                                                </div>
-                                            </div>
-                                            <div class="carousel__item">
-                                                <div @click="changeImage(thumbs[3])" :class="thumbs[3] == default_pic ? 'pt active' : 'pt' " >
-                                                    <img src="img/mickey4.jpg" alt="" />
-                                                </div>
-                                            </div>
+                                            </div> -->
                                         </Slide>
 
                                         <template #addons></template>
@@ -60,20 +50,12 @@
                             <div class="col-lg-6 text-left">
                                 <div class="product-details">
                                     <div class="pd-title">
-                                        <span>oranges</span>
-                                        <h3 class="mt-3 mb-2">Pure Pineapple</h3>
+                                        <span>{{ productDetails.type }}</span>
+                                        <h3 class="mt-3 mb-2">{{ productDetails.name }}</h3>
                                     </div>
                                     <div class="pd-desc">
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, error officia. Rem aperiam laborum voluptatum vel, pariatur modi hic provident eum iure natus quos non a sequi, id accusantium! Autem.
-                                        </p>
-                                        <p>
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam possimus quisquam animi, commodi, nihil voluptate nostrum neque architecto illo officiis doloremque et corrupti cupiditate voluptatibus error illum. Commodi expedita animi nulla aspernatur.
-                                            Id asperiores blanditiis, omnis repudiandae iste inventore cum, quam sint molestiae accusamus voluptates ex tempora illum sit perspiciatis. Nostrum dolor tenetur amet, illo natus magni veniam quia sit nihil dolores.
-                                            Commodi ratione distinctio harum voluptatum velit facilis voluptas animi non laudantium, id dolorem atque perferendis enim ducimus? A exercitationem recusandae aliquam quod. Itaque inventore obcaecati, unde quam
-                                            impedit praesentium veritatis quis beatae ea atque perferendis voluptates velit architecto?
-                                        </p>
-                                        <h4>$495.00</h4>
+                                        <p v-html="productDetails.description"></p>
+                                        <h4>$ {{ productDetails.price }}</h4>
                                     </div>
                                     <div class="quantity">
                                         <router-link to="/shopping-cart" class="primary-btn pd-cart">
@@ -100,6 +82,7 @@
     import FooterShayna from '@/components/Footer.vue';
     import RelatedProduct from '@/components/RelatedProduct.vue';
     import { Carousel, Slide } from 'vue3-carousel';
+    import axios from 'axios';
 
     export default {
         name: "productShayna",
@@ -112,19 +95,40 @@
         },
         data() {
             return {
-                default_pic:"img/mickey1.jpg",
+                default_pic:[],
                 thumbs: [
                     "img/mickey1.jpg",
                     "img/mickey2.jpg",
                     "img/mickey3.jpg",
                     "img/mickey4.jpg",
-                ]
+                ],
+                productDetails: [],
             }
         },
         methods: {
             changeImage(urlImage){
                 this.default_pic = urlImage;
-            }
+                // console.log(this.idProduct);
+            },
+            setDataPicture(data){
+                // replace object productDetails dengan data dari API
+                this.productDetails = data;
+                // replace value deafultPict dengan data index ke 0 dari API
+                this.default_pic = data.galleries[0].photo; 
+            },
+        },
+        mounted() {
+            axios
+            .get("http://shayna-backend-laravue.test/api/products", {
+                params: {
+                    id: this.$route.params.id,
+                }
+            })
+
+            // res = result
+            // .then(res => (this.productDetails = res.data.data))
+            .then(res => (this.setDataPicture(res.data.data)))
+            .catch(err => console.log(err))
         },
     };
 </script>
@@ -134,9 +138,11 @@
     .carousel__item {
         background-color: transparent;
         margin-right: 0.5rem;
+        /* display: -webkit-box; */
     }
     .carousel__item img {
         width: 100%;
+        max-height: 200px;
     }
     .carousel__slide.carousel__slide--visible.carousel__slide--active {
         padding: 0;;
