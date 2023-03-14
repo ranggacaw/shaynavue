@@ -11,7 +11,7 @@
                                         <div class="pi-pic">
                                             <img :src="itemProduct.galleries[0].photo" alt="">
                                             <ul>
-                                                <li class="w-icon active">
+                                                <li @click="saveCart(itemProduct.id, itemProduct.name, itemProduct.price, itemProduct.galleries[0].photo)"  class="w-icon active">
                                                     <a href="#"><i class="icon_bag_alt"></i></a>
                                                 </li>
                                                 <li class="quick-view">
@@ -34,90 +34,6 @@
 
                                     </div>
                                 </div>
-                                <!-- <div class="carousel__item">
-                                    <div class="product-item">
-                                        <div class="pi-pic">
-                                            <img :src="womanProducts[1]" alt="">
-                                            <ul>
-                                                <li class="w-icon active">
-                                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                                </li>
-                                                <li class="quick-view">
-                                                    <router-link to="/product">
-                                                        + Quick View
-                                                    </router-link>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="pi-text">
-                                            <div class="catagory-name">Coat</div>
-                                            <router-link to="/product">
-                                                <h5>Mickey Baggy</h5>
-                                            </router-link>
-                                            <div class="product-price">
-                                                $14.00
-                                                <span>$35.00</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="carousel__item">
-                                    <div class="product-item">
-                                        <div class="pi-pic">
-                                            <img :src="womanProducts[2]" alt="">
-                                            <ul>
-                                                <li class="w-icon active">
-                                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                                </li>
-                                                <li class="quick-view">
-                                                    <router-link to="/product">
-                                                        + Quick View
-                                                    </router-link>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="pi-text">
-                                            <div class="catagory-name">Coat</div>
-                                            <router-link to="/product">
-                                                <h5>Mickey Baggy</h5>
-                                            </router-link>
-                                            <div class="product-price">
-                                                $14.00
-                                                <span>$35.00</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="carousel__item">
-                                    <div class="product-item">
-                                        <div class="pi-pic">
-                                            <img :src="womanProducts[3]" alt="">
-                                            <ul>
-                                                <li class="w-icon active">
-                                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                                </li>
-                                                <li class="quick-view">
-                                                    <router-link to="/product">
-                                                        + Quick View
-                                                    </router-link>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="pi-text">
-                                            <div class="catagory-name">Coat</div>
-                                            <router-link to="/product">
-                                                <h5>Mickey Baggy</h5>
-                                            </router-link>
-                                            <div class="product-price">
-                                                $14.00
-                                                <span>$35.00</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div> -->
                             </Slide>
 
                             <template #addons></template>
@@ -153,8 +69,25 @@
                 "img/products/women-2.jpg",
                 "img/products/women-3.jpg",
                 "img/products/women-4.jpg",
-            ]
+            ],
+            userCart: []
            };
+        },
+        methods: {
+            // using idProduct for parameter, for save details in the cart 
+            // this function for add to cart function
+            saveCart(idProduct, nameProduct, priceProduct, photoProduct){
+                var productStored = {
+                    "id": idProduct,
+                    "name": nameProduct,
+                    "price": priceProduct,
+                    "photo": photoProduct
+                }
+
+                this.userCart.push(productStored);
+                const parsed = JSON.stringify(this.userCart);
+                localStorage.setItem('userCart', parsed);
+            }
         },
         mounted() {
             axios

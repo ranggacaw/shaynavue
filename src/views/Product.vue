@@ -26,18 +26,18 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="product-pic-zoom">
-                                    <img class="product-big-img" :src="default_pic" alt="" />
+                                    <img class="product-big-img" :src="defaultPic" alt="" />
                                 </div>
                                 <div class="product-thumbs">
                                     <Carousel :nav="false" class="product-thumbs-track ps-slider">
                                         <Slide v-for="slide in 2" :key="slide">
-                                            <div v-for="ss in productDetails.galleries" v-bind:key="ss.id" class="carousel__item">
-                                                <div @click="changeImage(ss.photo)" :class="ss.photo == default_pic ? 'pt active' : 'pt' " >
+                                            <div v-for="ss in productDetails.galleries" :key="ss.id" class="carousel__item">
+                                                <div @click="changeImage(ss.photo)" :class="ss.photo == defaultPic ? 'pt active' : 'pt' " >
                                                     <img :src="ss.photo" alt="" />
                                                 </div>
                                             </div>
                                             <!-- <div class="carousel__item">
-                                                <div @click="changeImage(thumbs[1])" :class="thumbs[1] == default_pic ? 'pt active' : 'pt' " >
+                                                <div @click="changeImage(thumbs[1])" :class="thumbs[1] == defaultPic ? 'pt active' : 'pt' " >
                                                     <img src="img/mickey2.jpg" alt="" />
                                                 </div>
                                             </div> -->
@@ -58,9 +58,9 @@
                                         <h4>$ {{ productDetails.price }}</h4>
                                     </div>
                                     <div class="quantity">
-                                        <router-link to="/shopping-cart" class="primary-btn pd-cart">
-                                            Add To Cart
-                                        </router-link>
+                                        <!-- <router-link to="/shopping-cart"> -->
+                                            <button @click="saveCart(productDetails.id, productDetails.name, productDetails.price, productDetails.galleries[0].photo)" class="primary-btn pd-cart">Add To Cart</button>
+                                        <!-- </router-link> -->
                                     </div>
                                 </div>
                             </div>
@@ -95,29 +95,45 @@
         },
         data() {
             return {
-                default_pic:[],
-                thumbs: [
-                    "img/mickey1.jpg",
-                    "img/mickey2.jpg",
-                    "img/mickey3.jpg",
-                    "img/mickey4.jpg",
-                ],
+                defaultPic:[],
                 productDetails: [],
+                userCart: []
             }
         },
         methods: {
             changeImage(urlImage){
-                this.default_pic = urlImage;
+                this.defaultPic = urlImage;
                 // console.log(this.idProduct);
             },
             setDataPicture(data){
                 // replace object productDetails dengan data dari API
                 this.productDetails = data;
                 // replace value deafultPict dengan data index ke 0 dari API
-                this.default_pic = data.galleries[0].photo; 
+                this.defaultPic = data.galleries[0].photo; 
             },
+            // using idProduct for parameter, for save details in the cart 
+            // this function for add to cart function
+            saveCart(idProduct, nameProduct, priceProduct, photoProduct){
+                var productStored = {
+                    "id": idProduct,
+                    "name": nameProduct,
+                    "price": priceProduct,
+                    "photo": photoProduct
+                }
+
+                this.userCart.push(productStored);
+                const parsed = JSON.stringify(this.userCart);
+                localStorage.setItem('userCart', parsed);
+            }
         },
         mounted() {
+            if (localStorage.getItem('userCart')) {
+                try {
+                    this.userCart = JSON.parse(localStorage.getItem('userCart'));
+                } catch(e) {
+                    localStorage.removeItem('userCart');
+                }
+            }
             axios
             .get("http://shayna-backend-laravue.test/api/products", {
                 params: {
