@@ -87,14 +87,20 @@
             }
         },
         methods: {
-            removeItem(index){
-                // 1 for 1 item
-                this.userCart.splice(index,1);
-                // console.log(this.userCart.splice(index,1));
+            removeItem(idx){
+                // cari tau id dari this.item yang akan di apus
+                let userCartStorage = JSON.parse(localStorage.getItem("userCart"));
+                let itemUserCartStorage = userCartStorage.map(itemUserCartStorage => itemUserCartStorage.id);
+
+                // mencocokan idx item dengan id yang ada di local storage / usercart
+                let index = itemUserCartStorage.findIndex(id => id == idx);
+                this.userCart.splice(index, 1);
 
                 // methods for save data userCart
                 const parsed = JSON.stringify(this.userCart);
                 localStorage.setItem('userCart', parsed);
+
+                window.location.reload();
             }
         },
         mounted() {

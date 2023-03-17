@@ -87,6 +87,8 @@
                 this.userCart.push(productStored);
                 const parsed = JSON.stringify(this.userCart);
                 localStorage.setItem('userCart', parsed);
+
+                window.location.reload();
             }
         },
         mounted() {
@@ -95,7 +97,16 @@
 
             // res = result
             .then(res => (this.products = res.data.data.data))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
+
+            if (localStorage.getItem("userCart")) {
+                try {
+                    this.userCart = JSON.parse(localStorage.getItem("userCart"));
+                }catch(e) {
+                    localStorage.removeItem("userCart");
+                }
+                
+            }
         },
     })
 </script>
